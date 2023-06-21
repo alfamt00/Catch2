@@ -1,0 +1,144 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+struct Song {
+    string title;
+    string artist;
+    string genre;
+    string album;
+};
+
+void addSong(vector<Song>& songs) {
+    Song newSong;
+    
+    cout << "Enter the title: ";
+    getline(cin >> ws, newSong.title);
+    
+    cout << "Enter the artist: ";
+    getline(cin >> ws, newSong.artist);
+    
+    cout << "Enter the genre: ";
+    getline(cin >> ws, newSong.genre);
+    
+    cout << "Enter the album: ";
+    getline(cin >> ws, newSong.album);
+    
+    songs.push_back(newSong);
+    cout << "Song added successfully!\n";
+}
+
+void deleteSong(vector<Song>& songs, const string& title) {
+    auto it = find_if(songs.begin(), songs.end(), [&](const Song& song) {
+        return song.title == title;
+    });
+    
+    if (it != songs.end()) {
+        songs.erase(it);
+        cout << "Song deleted successfully!\n";
+    } else {
+        cout << "Song not found!\n";
+    }
+}
+
+void searchByArtist(const vector<Song>& songs, const string& artist) {
+    cout << "Songs by artist '" << artist << "':\n";
+    
+    for (const auto& song : songs) {
+        if (song.artist == artist) {
+            cout << "Title: " << song.title << ", Genre: " << song.genre << ", Album: " << song.album << endl;
+        }
+    }
+}
+
+void searchByTitle(const vector<Song>& songs, const string& title) {
+    cout << "Songs with title '" << title << "':\n";
+    
+    for (const auto& song : songs) {
+        if (song.title == title) {
+            cout << "Artist: " << song.artist << ", Genre: " << song.genre << ", Album: " << song.album << endl;
+        }
+    }
+}
+
+void searchByGenre(const vector<Song>& songs, const string& genre) {
+    cout << "Songs of genre '" << genre << "':\n";
+    
+    for (const auto& song : songs) {
+        if (song.genre == genre) {
+            cout << "Title: " << song.title << ", Artist: " << song.artist << ", Album: " << song.album << endl;
+        }
+    }
+}
+
+void searchByAlbum(const vector<Song>& songs, const string& album) {
+    cout << "Songs in album '" << album << "':\n";
+    
+    for (const auto& song : songs) {
+        if (song.album == album) {
+            cout << "Title: " << song.title << ", Artist: " << song.artist << ", Genre: " << song.genre << endl;
+        }
+    }
+}
+
+int main() {
+    vector<Song> songs;
+    
+    int choice;
+    string title, artist, genre, album;
+    
+    do {
+        cout << "\n-- Music Library --\n";
+        cout << "1. Add a song\n";
+        cout << "2. Delete a song\n";
+        cout << "3. Search by artist\n";
+        cout << "4. Search by title\n";
+        cout << "5. Search by genre\n";
+        cout << "6. Search by album\n";
+        cout << "0. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+        cin.ignore();
+        
+        switch (choice) {
+            case 1:
+                addSong(songs);
+                break;
+            case 2:
+                cout << "Enter the title of the song to delete: ";
+                getline(cin >> ws, title);
+                deleteSong(songs, title);
+                break;
+            case 3:
+                cout << "Enter the artist to search: ";
+                getline(cin >> ws, artist);
+                searchByArtist(songs, artist);
+                break;
+            case 4:
+                cout << "Enter the title to search: ";
+                getline(cin >> ws, title);
+                searchByTitle(songs, title);
+                break;
+            case 5:
+                cout << "Enter the genre to search: ";
+                getline(cin >> ws, genre);
+                searchByGenre(songs, genre);
+                break;
+            case 6:
+                cout << "Enter the album to search: ";
+                getline(cin >> ws, album);
+                searchByAlbum(songs, album);
+                break;
+            case 0:
+                cout << "Exiting...\n";
+                break;
+            default:
+                cout << "Invalid choice! Please try again.\n";
+        }
+        
+    } while (choice != 0);
+    
+    return 0;
+}
